@@ -3,12 +3,12 @@
         <div class="content">
             <div class="container-fluid">
                 <!--~~~~~~~ TABLE ONE ~~~~~~~~~-->
-                <div class="_1adminOverveiw_table_recent _box_shadow _border_radious _mar_b30 _p20">
+                <div
+                    class="_1adminOverveiw_table_recent _box_shadow _border_radious _mar_b30 _p20"
+                >
                     <p class="_title0">
-                        Tags
-                        <Button @click="addModal = true">
-                            <Icon type="md-add" /> Add tag
-                        </Button>
+                        Role Managment
+                        <Button @click="addModal = true"><Icon type="md-add" /> Add a new role</Button>
                     </p>
 
                     <div class="_overflow _table_div">
@@ -16,80 +16,67 @@
                             <!-- TABLE TITLE -->
                             <tr>
                                 <th>ID</th>
-                                <th>Tag name</th>
+                                <th>Role Type</th>
                                 <th>Created at</th>
                                 <th>Action</th>
                             </tr>
+                            <!-- TABLE TITLE -->
+
                             <!-- ITEMS -->
                             <tr
                                 v-for="(tag, i) in tags"
-                                :key="tag.id"
+                                :key="i"
                                 v-if="tags.length"
                             >
                                 <td>{{ tag.id }}</td>
-                                <td class="_table_name">{{ tag.tagName }}</td>
+                                <td class="_table_name">{{ tag.roleName }}</td>
+                                <!-- <td class="">{{ tag.permission }}</td> -->
+
                                 <td>{{ tag.created_at }}</td>
                                 <td>
                                     <Button
                                         size="small"
                                         type="info"
                                         @click="showEditModal(tag, i)"
+                                        >Edit</Button
                                     >
-                                        Edit
-                                    </Button>
                                     <Button
                                         type="error"
                                         size="small"
                                         @click="showDeletingModal(tag, i)"
                                         :loading="tag.isDeleting"
+                                        >Delete</Button
                                     >
-                                        Delete
-                                    </Button>
                                 </td>
                             </tr>
+                            <!-- ITEMS -->
                         </table>
-
-                        <div class="mt-3">
-                         
-
-                            <Button
-                                @click="goToPreviousPage"
-                                :disabled="currentPage <= 1"
-                            >
-                                Previous
-                            </Button>
-                            <Button
-                                @click="goToNextPage"
-                                :disabled="currentPage >= totalPages"
-                            >
-                                Next
-                            </Button>
-                        </div>
-                        <p class="mt-3">Current Page: {{ currentPage }}</p>
                     </div>
                 </div>
 
                 <!-- Add Modal -->
                 <Modal
                     v-model="addModal"
-                    title="Add tag"
+                    title="Add role"
                     :mask-closable="false"
                     :closable="false"
                 >
                     <Input
-                        v-model="data.tagName"
-                        placeholder="Enter something..."
+                        v-model="data.roleName"
+                        placeholder="Role Name"
                         style="width: 300px"
                     />
                     <div slot="footer">
-                        <Button type="default" @click="addModal = false">Close</Button>
+                        <Button type="default" @click="addModal = false"
+                            >Close</Button
+                        >
                         <Button
                             type="primary"
-                            @click="addTag"
+                            @click="add"
                             :disabled="isAdding"
                             :loading="isAdding"
                         >
-                            {{ isAdding ? "Adding.." : "Add tag" }}
+                            {{ isAdding ? "Adding.." : "Add Role" }}
                         </Button>
                     </div>
                 </Modal>
@@ -97,24 +84,26 @@
                 <!-- Edit Modal -->
                 <Modal
                     v-model="editModal"
-                    title="Edit tag"
+                    title="Edit role"
                     :mask-closable="false"
                     :closable="false"
                 >
                     <Input
-                        v-model="editData.tagName"
-                        placeholder="Edit tag name"
+                        v-model="editData.roleName"
+                        placeholder="Edit role name"
                         style="width: 300px"
                     />
                     <div slot="footer">
-                        <Button type="default" @click="editModal = false">Close</Button>
+                        <Button type="default" @click="editModal = false"
+                            >Close</Button
+                        >
                         <Button
                             type="primary"
-                            @click="editTag"
+                            @click="edit"
                             :disabled="isEditing"
                             :loading="isEditing"
                         >
-                            {{ isEditing ? "Editing.." : "Edit tag" }}
+                            {{ isEditing ? "Editing.." : "Edit role" }}
                         </Button>
                     </div>
                 </Modal>
@@ -125,6 +114,7 @@
         </div>
     </div>
 </template>
+
 <script>
 import { mapGetters } from "vuex";
 import deleteModal from "../components/deleteModal.vue";
@@ -132,43 +122,37 @@ import deleteModal from "../components/deleteModal.vue";
 export default {
     data() {
         return {
-            data: { tagName: "" },
+            data: { roleName: "" },
             addModal: false,
             editModal: false,
             isAdding: false,
             isEditing: false,
             isDeleting: false, // Added this property
             tags: [],
-            editData: { id: null, tagName: "" },
-            index: -1,
-
-            totalRows: 0,
-            perPage: 5,
-            currentPage: 1,
-            totalPages: 0,
-            
+            editData: { id: null, roleName: "" },
+            index: -1
         };
     },
     methods: {
-        async addTag() {
-            if (this.data.tagName.trim() === "") {
-                return this.e("Tag name is required");
+        async add() {
+            if (this.data.roleName.trim() === "") {
+                return this.e("Role name is required");
             }
 
             this.isAdding = true;
             try {
                 const res = await this.callApi(
                     "post",
-                    "/app/tags",
+                    "/app/create_role",
                     this.data
                 );
                 this.tags.unshift(res.data);
-                this.s("Tag added successfully");
+                this.s("Role has been added successfully");
                 this.addModal = false;
-                this.data.tagName = "";
+                this.data.roleName = "";
             } catch (e) {
                 if (e.response && e.response.status === 422) {
-                    this.i(e.response.data.errors.tagName[0]);
+                    this.i(e.response.data.errors.roleName[0]);
                 } else {
                     this.swr();
                 }
@@ -176,24 +160,24 @@ export default {
                 this.isAdding = false;
             }
         },
-        async editTag() {
-            if (this.editData.tagName.trim() === "") {
-                return this.e("Tag name is required");
+        async edit() {
+            if (this.editData.roleName.trim() === "") {
+                return this.e("Role name is required");
             }
 
             this.isEditing = true;
             try {
                 const res = await this.callApi(
-                    "put", // Change to "put" if route uses PUT
-                    `/app/tags/${this.editData.id}`, // Ensure you pass the tag ID in the URL
+                    "post",
+                    "/app/edit_role",
                     this.editData
                 );
-                this.tags[this.index].tagName = this.editData.tagName;
-                this.s("Tag has been edited successfully");
+                this.tags[this.index].roleName = this.editData.roleName;
+                this.s("Role has been edited successfully");
                 this.editModal = false;
             } catch (e) {
                 if (e.response && e.response.status === 422) {
-                    this.i(e.response.data.errors.tagName[0]);
+                    this.i(e.response.data.errors.roleName[0]);
                 } else {
                     this.swr();
                 }
@@ -212,7 +196,7 @@ export default {
             try {
                 // Call API to delete the tag
                 const res = await this.callApi(
-                    "delete",
+                    "post",
                     this.getDeleteModalobj.deleteUrl,
                     this.getDeleteModalobj.data
                 );
@@ -222,7 +206,7 @@ export default {
                     this.tags.splice(this.getDeleteModalobj.deletingIndex, 1);
 
                     // Show success message
-                    this.s("Tag has been deleted successfully!");
+                    this.s("Role has been deleted successfully!");
 
                     // Close the modal
                     this.$store.commit("setDeleteModal", { isDeleted: true });
@@ -240,59 +224,32 @@ export default {
             }
         },
         showDeletingModal(tag, i) {
-            const deleteModalObj  =  {
-				showDeleteModal: true, 
-				deleteUrl : `app/tags/${tag.id}`, 
-				data : tag, 
-				deletingIndex: i, 
-				isDeleted : false,
-			}
-			this.$store.commit('setDeletingModalObj', deleteModalObj)
-        },
-        async fetchTags() {
-            try {
-                const res = await this.callApi("get", `/app/tags?page=${this.currentPage}&per_page=${this.perPage}`);
-                this.tags = res.data.data;
-                this.totalRows = res.data.total;
-                this.totalPages = res.data.last_page; // Update totalPages
-            } catch (e) {
-                this.e();
-            }
-        },
-        async onPageChange(page) {
-            this.currentPage = page;
-            await this.fetchTags();
-        },
-        async goToPreviousPage() {
-            if (this.currentPage > 1) {
-                this.currentPage--;
-                await this.fetchTags();
-            }
-        },
-        async goToNextPage() {
-            if (this.currentPage < this.totalPages) {
-                this.currentPage++;
-                await this.fetchTags();
-            }
-        },
+            // Prepare deleteModal object to show the modal and track the element
+            const deleteModalobj = {
+                showDeleteModal: true,
+                deleteUrl: "/app/delete_role", // Your delete URL
+                data: tag, // Pass the tag object to delete
+                deletingIndex: i, // Track the correct index
+                isDeleted: false
+            };
+
+            // Commit to Vuex store to update the delete modal state
+            this.$store.commit("setDeletingModalObj", deleteModalobj);
+        }
     },
     async created() {
-        await this.fetchTags();
-        // try {
-        //     const res = await this.callApi("get", "/app/tags");
-        //     this.tags = res.data.data;
-        // } catch (e) {
-        //     this.e();
-        // }
+        try {
+            const res = await this.callApi("get", "/app/get_role");
+            this.tags = res.data;
+        } catch (e) {
+            this.e();
+        }
     },
     components: {
         deleteModal
     },
     computed: {
-        ...mapGetters(["getDeleteModalobj"]),
-        rows() {
-            return this.tags.length
-        }
+        ...mapGetters(["getDeleteModalobj"])
     },
     watch: {
         getDeleteModalobj(obj) {
