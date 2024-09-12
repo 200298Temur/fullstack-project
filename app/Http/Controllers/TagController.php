@@ -21,9 +21,10 @@ class TagController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return TagResource::collection($this->tagService->getAll());
+        $tags=$this->tagService->getAll($request);     
+        return  $tags;
     }
 
     /**
@@ -45,6 +46,7 @@ class TagController extends Controller
     {
         
         $tag =$this->tagService->store($request);
+
         return new TagResource($tag);
     }
 

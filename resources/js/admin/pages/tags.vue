@@ -48,28 +48,14 @@
                                 </td>
                             </tr>
                         </table>
-
                         <div class="mt-3">
-                         
-
-                            <Button
-                                @click="goToPreviousPage"
-                                :disabled="currentPage <= 1"
-                            >
-                                Previous
-                            </Button>
-                            <Button
-                                @click="goToNextPage"
-                                :disabled="currentPage >= totalPages"
-                            >
-                                Next
-                            </Button>
+                            <Button @click="goToPreviousPage" :disabled="currentPage <= 1">Previous</Button>
+                            <Button @click="goToNextPage" :disabled="currentPage >= totalPages">Next</Button>
                         </div>
                         <p class="mt-3">Current Page: {{ currentPage }}</p>
                     </div>
                 </div>
 
-                <!-- Add Modal -->
                 <Modal
                     v-model="addModal"
                     title="Add tag"
@@ -128,6 +114,7 @@
 <script>
 import { mapGetters } from "vuex";
 import deleteModal from "../components/deleteModal.vue";
+import { Modal } from "bootstrap";
 
 export default {
     data() {
@@ -251,30 +238,34 @@ export default {
         },
         async fetchTags() {
             try {
-                const res = await this.callApi("get", `/app/tags?page=${this.currentPage}&per_page=${this.perPage}`);
-                this.tags = res.data.data;
-                this.totalRows = res.data.total;
-                this.totalPages = res.data.last_page; // Update totalPages
-            } catch (e) {
-                this.e();
+                const res = await this.callApi(
+                    "get",
+                    `/app/tags?page=${this.currentPage}&per_page=${this.perPage}`
+                );
+                
+                this.tags = res.data.data; // Tags data
+                this.totalRows = res.data.total; // Total rows from meta
+                this.totalPages = res.data.last_page; // Total pages from meta
+            }catch (e) {
+                this.e(); // Handle errors
             }
         },
-        async onPageChange(page) {
-            this.currentPage = page;
-            await this.fetchTags();
-        },
+
         async goToPreviousPage() {
             if (this.currentPage > 1) {
                 this.currentPage--;
-                await this.fetchTags();
+                await this.fetchTags(); // Ushbu qatorni tekshiring
             }
         },
         async goToNextPage() {
+            console.log(this.currentPage)
             if (this.currentPage < this.totalPages) {
                 this.currentPage++;
-                await this.fetchTags();
+                await this.fetchTags(); // Ushbu qatorni tekshiring
             }
-        },
+            console.log(this.currentPage)
+        }
+
     },
     async created() {
         await this.fetchTags();
