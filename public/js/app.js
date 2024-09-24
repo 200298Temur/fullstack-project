@@ -18509,7 +18509,7 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
         }, _callee2, null, [[3, 12, 15, 18]]);
       }))();
     },
-    showEditModal: function showEditModal(tag, index) {
+    showEditModal: function showEditModal(role, index) {
       this.editData = _objectSpread({}, tag); // Copy the tag object to editData
       this.editModal = true;
       this.index = index;
@@ -18524,7 +18524,7 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
               _this3.isDeleting = true;
               _context3.prev = 1;
               _context3.next = 4;
-              return _this3.callApi("post", _this3.getDeleteModalobj.deleteUrl, _this3.getDeleteModalobj.data);
+              return _this3.callApi("delete", _this3.getDeleteModalobj.deleteUrl, _this3.getDeleteModalobj.data);
             case 4:
               res = _context3.sent;
               if (res.status === 200) {
@@ -19538,7 +19538,9 @@ vue__WEBPACK_IMPORTED_MODULE_0__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_1_
     },
     getDeleteModalobj: function getDeleteModalobj(state) {
       return state.deleteModalobj;
-    }
+    } // loggedInuser(state){
+    //     return 
+    // }
   },
   mutations: {
     changeTheCounter: function changeTheCounter(state, data) {

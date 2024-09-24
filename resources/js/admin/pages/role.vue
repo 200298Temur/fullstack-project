@@ -185,7 +185,7 @@ export default {
                 this.isEditing = false;
             }
         },
-        showEditModal(tag, index) {
+        showEditModal(role, index) {
             this.editData = { ...tag }; // Copy the tag object to editData
             this.editModal = true;
             this.index = index;
@@ -196,7 +196,7 @@ export default {
             try {
                 // Call API to delete the tag
                 const res = await this.callApi(
-                    "post",
+                    "delete",
                     this.getDeleteModalobj.deleteUrl,
                     this.getDeleteModalobj.data
                 );

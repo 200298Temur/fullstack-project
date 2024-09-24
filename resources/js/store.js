@@ -22,6 +22,9 @@ export default new Vuex.Store({
         getDeleteModalobj(state) {
             return state.deleteModalobj;
         },
+        // loggedInuser(state){
+        //     return 
+        // }
     },
     mutations: {
         changeTheCounter(state, data) {
