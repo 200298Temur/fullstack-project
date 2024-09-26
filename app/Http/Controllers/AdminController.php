@@ -29,8 +29,31 @@ class AdminController extends Controller
         if ($request->path() == 'login') {
             return redirect('/');
         }
-        return view('welcome');
-     
+        // return view('welcome');
+        return $this->checkForPermission($user,$request);
+    }
+
+    public function checkForPermission($user, $request)
+    {
+        $permission = json_decode($user->role->permission);
+        $hasPermission = false;
+        if (!$permission) {
+            return view('welcome');
+        }
+
+        foreach ($permission as $p) {
+            if ($p->name == $request->path()) {
+                if ($p->read) {
+                    $hasPermission = true;
+                }
+            }
+        }
+        if ($hasPermission) {
+            return view('welcome');
+        }
+
+        // return view('welcome');
+        return view('notfound');
     }
 
     public function logout(){
@@ -199,4 +222,14 @@ class AdminController extends Controller
         ]);
         return Role::where('id',$request->id)->delete();
     }  
+
+    public function assignRoles(Request $request){
+        $this->validate($request,[
+            'id'=>'required',
+            'permission'=>'required',
+        ]);
+        return Role::where('id',$request->id)->update([
+            'permission'=>$request->permission
+        ]);
+    }
 }

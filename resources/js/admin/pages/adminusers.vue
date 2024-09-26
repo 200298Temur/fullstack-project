@@ -43,7 +43,7 @@
                         <Input type="password" v-model="data.password" placeholder="Password"/>
                     </div>
                     <div class="space">
-                        <Select v-model="data.role_id" placeholder="Select user type">
+                        <Select v-model="data.role_id" placeholder="Select admin type">
                             <Option :value="r.id" v-for="(r,i) in roles" :key="i" v-if="roles.length">{{ r.roleName }}</Option>
                         </Select>
                     </div>
@@ -177,7 +177,8 @@ export default {
                 isDeleted: false
             };
             this.$store.commit("setDeletingModalObj", deleteModalobj);
-        },showEditModal(user, index){
+        },
+        showEditModal(user, index){
 			let obj = {
 				id : user.id, 
 				fullName : user.fullName, 

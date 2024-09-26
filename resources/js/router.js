@@ -1,8 +1,8 @@
-import Vue from  'vue'
+import Vue from 'vue'
 import Router from 'vue-router'
 
-
 Vue.use(Router)
+
 import fisrtPage from './components/pages/myFirstVuePage.vue'
 import newRoutePage from './components/pages/newRoutePage.vue'
 import hooks from './components/pages/home.vue'
@@ -15,41 +15,51 @@ import category from './admin/pages/category.vue'
 import adminuser from './admin/pages/adminusers.vue'
 import login from './admin/pages/login.vue'
 import role from './admin/pages/role.vue'
+import assignRole from './admin/pages/assignRole.vue'
 
-
-const routes=[
+const routes = [
     {
         path: '/testvuex',
         component: usecom
     },
     {
         path: '/',
-        component: home
+        component: home,
+        name: 'home'  // Use string 'home' instead of home component
     },
     {
         path: '/tags',
         component: tags,
+        name: 'tags'  // Use string 'tags' instead of tags component
     },
     {
         path: '/category',
         component: category,
+        name: 'category'  // Use string 'category'
     },
     {
         path: '/adminuser',
         component: adminuser,
+        name: 'adminuser'  // Use string 'adminuser'
     },
     {
         path: '/login',
         component: login,
+        name: 'login'  // Use string 'login'
     },
     {
         path: '/role',
         component: role,
+        name: 'role'  // Use string 'role'
+    },
+    {
+        path: '/assignRole',
+        component: assignRole,
+        name: 'assignRole'  // Use string 'assignRole'
     },
 
 
-
-
+    
     {
         path: '/my-new-vue-route',
         component: fisrtPage
@@ -64,11 +74,11 @@ const routes=[
     },
     {
         path: '/methods',
-        component:methods
+        component: methods
     }
 ]
 
 export default new Router({
-    mode:'history',
+    mode: 'history',
     routes
 })
