@@ -20,12 +20,12 @@ use App\Http\Controllers\TagController;
 
 Route::prefix("app")->middleware([AdminCheck::class])->group(function(){
     // Route::post('/create_tag', [TagController::class, 'store']);
-    // Route::get('/get-tags', [TagController::class, 'index']); 
+     Route::get('/get-tags', [TagController::class, 'index']); 
     // Route::put('/edit-tag/{tag}', [TagController::class, 'update']);
     // Route::post('/delete_tag/{tag}', [TagController::class, 'destroy']);
    
     Route::apiResource('tags', TagController::class);
-
+    
     // Route::resource('tags', TagController::class)->except([
     //     'store', 'update', 'destroy','index'
     // ]);
@@ -46,6 +46,7 @@ Route::prefix("app")->middleware([AdminCheck::class])->group(function(){
     Route::delete('delete_role',[AdminController::class,'deleteRole']);
     Route::post('assign_roles',[AdminController::class,'assignRoles']);
 });
+Route::post('createBlog',[AdminController::class,'uploadEditorImage']);
 
 Route::get('/logout',[AdminController::class,'logout']);
 Route::get('/',[AdminController::class,'index']);

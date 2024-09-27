@@ -16,6 +16,7 @@ import adminuser from './admin/pages/adminusers.vue'
 import login from './admin/pages/login.vue'
 import role from './admin/pages/role.vue'
 import assignRole from './admin/pages/assignRole.vue'
+import createBlog from './admin/pages/createBlog'
 
 const routes = [
     {
@@ -36,6 +37,11 @@ const routes = [
         path: '/category',
         component: category,
         name: 'category'  // Use string 'category'
+    },
+    {
+        path: '/createBlog',
+        component: createBlog,
+        name:'createBlog'
     },
     {
         path: '/adminuser',
@@ -59,7 +65,7 @@ const routes = [
     },
 
 
-    
+
     {
         path: '/my-new-vue-route',
         component: fisrtPage

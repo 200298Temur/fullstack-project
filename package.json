@@ -31,6 +31,7 @@
         "jsonwebtoken": "^9.0.2",
         "oh-vue-icons": "^1.0.0-rc3",
         "view-design": "^4.7.0",
+        "vue-editor-js": "^1.1.1",
         "vue-router": "^3.4.5",
         "vuex": "^3.6.2"
     }

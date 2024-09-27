@@ -74,6 +74,7 @@ export default {
             roles: [],
 
             resources: [
+
                 {
                     resourceName: "Home",
                     read: false,
@@ -99,12 +100,20 @@ export default {
                     name: "category",
                 },
                 {
-                    resourceName: "Admin users",
+                    resourceName: "Create blogs",
                     read: false,
                     write: false,
                     update: false,
                     delete: false,
-                    name: "adminusers",
+                    name: "createBlog",
+                },
+                {
+                    resourceName: "Admin users",
+                    read: true,
+                    write: false,
+                    update: false,
+                    delete: false,
+                    name: "adminuser",
                 },
                 {
                     resourceName: "Role",
@@ -149,12 +158,20 @@ export default {
                     name: "category",
                 },
                 {
+                    resourceName: "Create blogs",
+                    read: false,
+                    write: false,
+                    update: false,
+                    delete: false,
+                    name: "createBlog",
+                },
+                {
                     resourceName: "Admin users",
                     read: false,
                     write: false,
                     update: false,
                     delete: false,
-                    name: "adminusers",
+                    name: "adminuser",
                 },
                 {
                     resourceName: "Assign Role",

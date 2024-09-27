@@ -232,4 +232,19 @@ class AdminController extends Controller
             'permission'=>$request->permission
         ]);
     }
+
+    public function uploadEditorImage(Request $request){
+        $this->validate($request, [
+            'image' => 'required|mimes:jpeg,jpg,png',
+        ]);
+        $picName = time() . '.' . $request->image->extension();
+        $request->image->move(public_path('uploads'), $picName);
+        return response()->json([
+            'success' => 1,
+            'file' => [
+                'url' => "http://fullstack.localhost/uploads/$picName",
+            ],
+        ]);
+        return $picName;
+    }
 }
