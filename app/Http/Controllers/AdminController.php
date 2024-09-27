@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Blog;
 use App\Models\Category;
 use App\Models\Role;
 use App\Models\Tag;
@@ -247,4 +248,23 @@ class AdminController extends Controller
         ]);
         return $picName;
     }
+
+    public function slug() {
+        $title = 'This is nice title';
+    
+       return Blog::create([
+            'title' => $title,
+            'post' => 'some post',
+            'post_excerpt' => 'aead',
+            'user_id' => 1, 
+            'metaDescription' => 'aead',
+            'featuredImage'=>'image.jpeg'
+        ]);
+        
+        // return $title; 
+    }
+
+    public function createBlog(Request $request){
+        
+    }    
 }

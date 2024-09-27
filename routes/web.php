@@ -25,7 +25,7 @@ Route::prefix("app")->middleware([AdminCheck::class])->group(function(){
     // Route::post('/delete_tag/{tag}', [TagController::class, 'destroy']);
    
     Route::apiResource('tags', TagController::class);
-    
+
     // Route::resource('tags', TagController::class)->except([
     //     'store', 'update', 'destroy','index'
     // ]);
@@ -45,8 +45,13 @@ Route::prefix("app")->middleware([AdminCheck::class])->group(function(){
     Route::post('edit_role',[AdminController::class,'editRole']);
     Route::delete('delete_role',[AdminController::class,'deleteRole']);
     Route::post('assign_roles',[AdminController::class,'assignRoles']);
+
+    // blog
+
+    Route::post('create-blog',[AdminController::class,'createBlog']);
 });
 Route::post('createBlog',[AdminController::class,'uploadEditorImage']);
+Route::get('slug',[AdminController::class,'slug']);
 
 Route::get('/logout',[AdminController::class,'logout']);
 Route::get('/',[AdminController::class,'index']);
