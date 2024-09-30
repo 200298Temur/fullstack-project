@@ -47,11 +47,13 @@ Route::prefix("app")->middleware([AdminCheck::class])->group(function(){
     Route::post('assign_roles',[AdminController::class,'assignRoles']);
 
     // blog
-
+    Route::get('blogsdata',[AdminController::class,'blogdata']);
     Route::post('create-blog',[AdminController::class,'createBlog']);
+    Route::delete('delete_blog',[AdminController::class,'deleteBlog']);
 });
 Route::post('createBlog',[AdminController::class,'uploadEditorImage']);
 Route::get('slug',[AdminController::class,'slug']);
+Route::get('blogdata',[AdminController::class,'blogdata']);
 
 Route::get('/logout',[AdminController::class,'logout']);
 Route::get('/',[AdminController::class,'index']);

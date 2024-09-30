@@ -11,7 +11,9 @@ use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class AdminController extends Controller
 {
@@ -92,6 +94,7 @@ class AdminController extends Controller
 
 
     public function addCategory(Request $request){
+        // Log::info($request);
         $this->validate($request,[
             'categoryName'=>'required',
             "IconImage"=>'required'
@@ -273,28 +276,44 @@ class AdminController extends Controller
 
         $blogCategories=[];
         $blogTag=[];
-
-        $blog= Blog::create([
-            'title' => $request->title,
-            'post' => $request->post,
-            'post_excerpt' => $request->post_excerpt,
-            'user_id' => Auth::user()->id, 
-            'metaDescription' => $request->metaDescription,
-            'featuredImage'=>$request->titlefeaturedImage ,
-            'jsonData'=>$request->jsonData,
-
-        ]);   
-
-        foreach($categoryies as $c){
-            array_push($blogCategories,['category_id'=>$c,'blog_id'=>$blog->id]);
+        DB::beginTransaction();
+        try{
+            $blog= Blog::create([
+                'title' => $request->title,
+                'post' => $request->post,
+                'slug' => $request->slug,
+                'post_excerpt' => $request->post_excerpt,
+                'user_id' => Auth::user()->id, 
+                'metaDescription' => $request->metaDescription,
+                'featuredImage'=>$request->titlefeaturedImage ,
+                'jsonData'=>$request->jsonData,
+    
+            ]);   
+    
+            foreach($categoryies as $c){
+                array_push($blogCategories,['category_id'=>$c,'blog_id'=>$blog->id]);
+            }
+            Blogcategory::insert($blogCategories);
+    
+            foreach($tags as $t){
+                array_push($blogTag,['tag_id'=>$t,'blog_id'=>$blog->id]);
+            }
+            Blogtag::insert($blogTag);    
+            DB::commit();   
+            return 'done';  
+        }catch(Throwable $th){
+            Db::rollBack();
+            // throw $th;
+            return 'not done ';
         }
-        Blogcategory::insert($blogCategories);
-
-        foreach($tags as $t){
-            array_push($blogTag,['tag_id'=>$t,'blog_id'=>$blog->id]);
-        }
-        Blogtag::insert($blogTag);
-
-        return 'done';  
+       
     }    
+
+    public function blogdata(){
+         return Blog::with(['tag','cat'])->orderBy('id','desc')->get();
+    }
+    public function deleteBlog(Request $request){
+  
+        return Blog::where('id',$request->id)->delete();
+    }
 }

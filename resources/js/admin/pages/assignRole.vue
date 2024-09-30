@@ -108,6 +108,14 @@ export default {
                     name: "createBlog",
                 },
                 {
+                    resourceName: "Blogs",
+                    read: false,
+                    write: false,
+                    update: false,
+                    delete: false,
+                    name: "blogs",
+                },
+                {
                     resourceName: "Admin users",
                     read: true,
                     write: false,
@@ -164,6 +172,14 @@ export default {
                     update: false,
                     delete: false,
                     name: "createBlog",
+                },
+                {
+                    resourceName: "Blogs",
+                    read: false,
+                    write: false,
+                    update: false,
+                    delete: false,
+                    name: "blogs",
                 },
                 {
                     resourceName: "Admin users",

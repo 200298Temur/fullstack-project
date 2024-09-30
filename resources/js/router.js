@@ -17,7 +17,7 @@ import login from './admin/pages/login.vue'
 import role from './admin/pages/role.vue'
 import assignRole from './admin/pages/assignRole.vue'
 import createBlog from './admin/pages/createBlog'
-
+import blogs from './admin/pages/blog.vue'
 const routes = [
     {
         path: '/testvuex',
@@ -42,6 +42,11 @@ const routes = [
         path: '/createBlog',
         component: createBlog,
         name:'createBlog'
+    },
+    {
+        path: '/blogs',
+        component: blogs,
+        name:'blogs'
     },
     {
         path: '/adminuser',

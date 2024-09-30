@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Blogtag extends Model
 {
     use HasFactory;
-    protected $fillable=['tag_is','blog_id']
+    protected $fillable=['tag_is','blog_id'];
 }
