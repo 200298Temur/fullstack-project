@@ -50,6 +50,8 @@ Route::prefix("app")->middleware([AdminCheck::class])->group(function(){
     Route::get('blogsdata',[AdminController::class,'blogdata']);
     Route::post('create-blog',[AdminController::class,'createBlog']);
     Route::delete('delete_blog',[AdminController::class,'deleteBlog']);
+    Route::get('blog_single/{id}',[AdminController::class,'singleBlogItem']);
+    Route::post('update_blog/{id}',[AdminController::class,'uploadBlog']);
 });
 Route::post('createBlog',[AdminController::class,'uploadEditorImage']);
 Route::get('slug',[AdminController::class,'slug']);

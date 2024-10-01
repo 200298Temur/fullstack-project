@@ -50,7 +50,7 @@ export default new Vuex.Store({
         setUserPermission(state, data) {
             state.userPermission=data
         }
-        
+            
     },
     actions: {
         changeCounterAction({ commit }, data) {

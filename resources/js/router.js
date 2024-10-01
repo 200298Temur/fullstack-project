@@ -18,6 +18,10 @@ import role from './admin/pages/role.vue'
 import assignRole from './admin/pages/assignRole.vue'
 import createBlog from './admin/pages/createBlog'
 import blogs from './admin/pages/blog.vue'
+import editblog from './admin/pages/editblog.vue'
+import notfound from './admin/pages/notfound.vue'
+
+import { component } from 'vue/types/umd'
 const routes = [
     {
         path: '/testvuex',
@@ -68,9 +72,16 @@ const routes = [
         component: assignRole,
         name: 'assignRole'  // Use string 'assignRole'
     },
-
-
-
+    {
+        path: '/editblog/:id',
+        component: editblog,
+        name: 'editblog'  
+    },
+    {
+        path:'*',
+        component:notfound,
+        name:'notfound'
+    },  
     {
         path: '/my-new-vue-route',
         component: fisrtPage

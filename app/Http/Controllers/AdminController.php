@@ -313,7 +313,60 @@ class AdminController extends Controller
          return Blog::with(['tag','cat'])->orderBy('id','desc')->get();
     }
     public function deleteBlog(Request $request){
-  
         return Blog::where('id',$request->id)->delete();
     }
+    public  function singleBlogItem(Request $request,$id){
+        return Blog::with(['tag','cat'])->with('id',$id)->first();
+    }
+    public function uploadBlog(Request $request,$id){
+        $this->validate($request,[
+            'title'=>'required',
+            'post'=>'required',
+            'post_excerpt'=>'required',
+            'metaDescription'=>'required',
+            'jsonData'=>'required',
+            'category_id'=>'required',
+            'tag_id'=>'required',
+        ]);
+
+        $categoryies=$request->category_id; 
+        $tags=$request->tag_id;
+
+        $blogCategories=[];
+        $blogTag=[];
+        
+        DB::beginTransaction();
+        try{
+            $blog= Blog::where('id',$id)->update([
+                'title' => $request->title,
+                'post' => $request->post,
+                'slug' => $request->slug,
+                'post_excerpt' => $request->post_excerpt,
+                'user_id' => Auth::user()->id, 
+                'metaDescription' => $request->metaDescription,
+                'featuredImage'=>$request->titlefeaturedImage ,
+                'jsonData'=>$request->jsonData,
+    
+            ]);   
+    
+            foreach($categoryies as $c){
+                array_push($blogCategories,['category_id'=>$c,'blog_id'=>$blog->id]);
+            }
+            Blogcategory::where('blog_id',$id)->delete();
+            Blogcategory::insert($blogCategories);
+    
+            foreach($tags as $t){
+                array_push($blogTag,['tag_id'=>$t,'blog_id'=>$blog->id]);
+            }
+            Blogtag::where('blog_id',$id)->delete();
+            Blogtag::insert($blogTag);    
+            DB::commit();   
+            return 'done';  
+        }catch(Throwable $th){
+            Db::rollBack();
+            // throw $th;
+            return 'not done ';
+        }
+       
+    }    
 }
